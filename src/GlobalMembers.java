@@ -17,12 +17,12 @@ public class GlobalMembers{
 	static String[] bookSections = new String[6];
 	oneToManyMap<String, String> artistSongPair = new oneToManyMap<String, String>();
 	oneToManyMap<Integer, String> idSongPair = new oneToManyMap<Integer, String>();
-	Scanner sc = new Scanner(System.in);
-	DecimalFormat df = new DecimalFormat("00:00");
-	String path;
-	File file;
-	AudioInputStream audioStream;
-	Clip clip;
+	static Scanner sc = new Scanner(System.in);
+	static DecimalFormat df = new DecimalFormat("00:00");
+	static String path;
+	static File file;
+	static AudioInputStream audioStream;
+	static Clip clip;
 	static void cls() {
 	    try{
 	        String operatingSystem = System.getProperty("os.name"); //Check the current operating system
@@ -41,7 +41,7 @@ public class GlobalMembers{
 						}
 		}
 
-	public void invalidChoice() {
+	public static void invalidChoice() {
 		cls();
 		System.out.println("\n\t\t\t\tYou have Selected an Invalid Choice");
 		sleep(2000);
@@ -55,7 +55,7 @@ public class GlobalMembers{
 		System.out.println("\n\t\t\t\tRedirecting to previous Menu");
 		sleep(2000);
 	}
-	public void musicPlayer(Clip clip) throws Exception {
+	public static void musicPlayer(Clip clip) throws Exception {
 		file = new File(path);
 		audioStream = AudioSystem.getAudioInputStream(file);
 		clip = AudioSystem.getClip();

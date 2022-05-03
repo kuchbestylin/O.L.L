@@ -12,7 +12,7 @@
 
 import java.sql.*; //This is step 1
 
-public class DatabaseUtil extends BaseContoller{
+public class DatabaseUtil extends GlobalMembers{
 //==================================================================	
 	String url = "jdbc:sqlserver://localhost:1433;databaseName=OpenLearningLibrary;instance=SQLSERVER;encrypt=true;trustServerCertificate=true";
 	String uname = "sa";
@@ -103,9 +103,9 @@ public class DatabaseUtil extends BaseContoller{
 						+ "\n\t\t\t\tWelcome back " + member.getfName());
 				getBookSections();
 				loadMusicList();
-				membersHomePage();
+				Console.membersHomePage();
 			}
-			else signIn(sc);
+			else Console.signIn(sc);
 			callableStatement.close();
 			connection.close();
 			
@@ -176,7 +176,7 @@ public class DatabaseUtil extends BaseContoller{
 			System.out.print("\n\n\t\t\t\tEnter ISBN: ");
 			try {
 				isbn = sc.nextLine();
-				if(isbn.equalsIgnoreCase("exit"))membersHomePage();
+				if(isbn.equalsIgnoreCase("exit"))Console.membersHomePage();
 				Integer.valueOf(isbn);
 				connect();
 				callableStatement = connection.prepareCall("{call loanBook (?,?,?,?,?,?,?,?)}");
@@ -227,7 +227,7 @@ public class DatabaseUtil extends BaseContoller{
 					cls();
 					System.out.println("\n\t\t\t\tRedirecting to Home Page..");
 					sleep(2500);
-					membersHomePage();
+					Console.membersHomePage();
 
 				}
 			} catch (NumberFormatException e) {
@@ -242,7 +242,7 @@ public class DatabaseUtil extends BaseContoller{
 			System.out.println("\n\t\t\t" + e.getMessage());
 			System.out.println("\n\t\t\tSerchFailed");
 			sleep(2000);
-			queryBooks(criteria);
+			Console.queryBooks(criteria);
 		}
 	}
 	
@@ -289,12 +289,12 @@ public class DatabaseUtil extends BaseContoller{
 				System.out.println("\n\t\t\t\tBook has been returned successfully!");
 				sleep(3000);
 				System.out.println("\n\t\t\t\tRedirecting to previous Menu...");
-				accountInfo();
+				Console.accountInfo();
 			}
 			else throw new Exception();
 		} catch (Exception e) {
 			System.out.println("\n\t\t\t\tReturning book failed!");
-			returnBook();
+			Console.returnBook();
 		}
 		finally {
 			sleep(3000);
@@ -363,12 +363,12 @@ public class DatabaseUtil extends BaseContoller{
 				sleep(2000);
 				System.out.println("\n\t\t\t\tRedirecting to previous Menu..");
 				sleep(2000);
-				musicSessions();
+				Console.musicSessions();
 			}
 		} catch (Exception e) {
 			cls();
 			System.out.println("\n\t\t\t\tUnexpected Error occured! ");
-			musicSessions();
+			Console.musicSessions();
 		}
 		
 	}
@@ -396,13 +396,13 @@ public class DatabaseUtil extends BaseContoller{
 				sleep(2000);
 				System.out.println("\n\t\t\t\tRedirecting to previous Menu..");
 				sleep(2000);
-				musicSessions();
+				Console.musicSessions();
 			}
 			
 		} catch (Exception e) {
 			System.out.println("\n\t\t\t\t Server Error Occured");
 			sleep(3000);
-			musicSessions();
+			Console.musicSessions();
 		}
 	}
 	public void loadMusicList() {
@@ -468,7 +468,7 @@ public class DatabaseUtil extends BaseContoller{
 					sleep(2000);
 					System.out.println("\n\t\t\t\tRedirection to previous Menu");
 					sleep(2000);
-					membersHomePage();
+					Console.membersHomePage();
 				}
 			}
 			
@@ -478,7 +478,7 @@ public class DatabaseUtil extends BaseContoller{
 			sleep(1500);
 			System.out.println("\n\t\t\t\tRedirecting to Main Page");
 			sleep(1500);
-			membersHomePage();
+			Console.membersHomePage();
 		}
 		
 	}

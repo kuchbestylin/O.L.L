@@ -1,22 +1,27 @@
-/* When ever you work with JDBC you have to follow 7 steps
- * 1. Import the package --> java.sql
- * 2. Load and Register the driver --> com.microsoft.sqlserver.jdbc
- * 3. Create a connection
- * 4. Create a statement
- * 5. Execute the query
- * 6. Process the results
- * 7. Close connection
- */
-
 
 
 import java.sql.*; //This is step 1
 
-public class DatabaseUtil extends GlobalMembers{
-//==================================================================	
-	String url = "jdbc:sqlserver://localhost:1433;databaseName=OpenLearningLibrary;instance=SQLSERVER;encrypt=true;trustServerCertificate=true";
-	String uname = "sa";
-	String dbPassword = "Tkuch";
+/**
+ * 
+ * 
+ * <h1>How SQL SERVER JDBC works</h1>
+ * 
+ * <h6>When ever you work with Microsoft JDBC you have to follow these 7 steps:</h6>
+ * <ol>
+ * 		<li>Import the package --> java.sql</li>
+ * 		<li>Load and Register the driver --> com.microsoft.sqlserver.jdbc</li>
+ * 		<li>Create a connection</li>
+ * 		<li>Create a statement</li>
+ * 		<li>Execute the query</li>
+ * 		<li>Process the results</li>
+ * 		<li>Close connection</li>
+ * </li>
+ * 
+ * @author Takudzwa Kucherera
+ *
+ */
+public abstract class DataAccessLogic extends GlobalMembers implements IDataAccessObject{
 	String query;
 	Connection connection;
 	Statement statement;
@@ -27,17 +32,42 @@ public class DatabaseUtil extends GlobalMembers{
 	String determiner;
 	
 
-	
-	public DatabaseUtil() {
+	/**
+	 * 
+	 */
+	public DataAccessLogic() {
 		super();
 	}
-	public DatabaseUtil(String email, String password, Member member) 
+	
+	/**
+	 * 
+	 */
+	public DataAccessLogic(String email, String password, Member member) 
 	{
 		currentMember.setEmail(email.toLowerCase());
 		currentMember.setPassword(password);
 		this.verifyCredentials(email, password, member); 
 	}
-
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void registration(Member member) {
 		try 
 		{
@@ -74,6 +104,25 @@ public class DatabaseUtil extends GlobalMembers{
 		}
 	}
 	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void verifyCredentials(String signInEmail, String password, Member member) {
 		
 		try {
@@ -114,6 +163,25 @@ public class DatabaseUtil extends GlobalMembers{
 		}
 	}
 	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void getBookSections() {
 		try {
 			connect();
@@ -123,7 +191,7 @@ public class DatabaseUtil extends GlobalMembers{
 				rs = ps.getResultSet();
 				int k = 0;
 				while(rs.next()) {
-//					bookSections.add(rs.getString(1));
+					//bookSections.add(rs.getString(1));
 					bookSections[k++] = rs.getString(1);
 				}
 			}
@@ -137,6 +205,25 @@ public class DatabaseUtil extends GlobalMembers{
 		
 	}
 	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void searchBooksByKeyword(int criteria, String keyword) {
 
 
@@ -246,7 +333,25 @@ public class DatabaseUtil extends GlobalMembers{
 		}
 	}
 	
-
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public int printBorrowedBooks() {
 		int flagBit = 1;
 		try {
@@ -265,17 +370,33 @@ public class DatabaseUtil extends GlobalMembers{
 					System.out.println("\n\n\n\t\t\t\tUnfortunately you do not have any borrowed books");
 					flagBit = 0;
 				}
-				
 			}
-
-			
-			
 		} catch (Exception e) {
 			e.getMessage();
 			e.printStackTrace();
 		}
 		return flagBit;
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void hasReturned(String isbnChoice) {
 		try {
 			cls();
@@ -289,7 +410,7 @@ public class DatabaseUtil extends GlobalMembers{
 				System.out.println("\n\t\t\t\tBook has been returned successfully!");
 				sleep(3000);
 				System.out.println("\n\t\t\t\tRedirecting to previous Menu...");
-				Console.accountInfo();
+				Console.accountRealatedInfo();
 			}
 			else throw new Exception();
 		} catch (Exception e) {
@@ -302,6 +423,26 @@ public class DatabaseUtil extends GlobalMembers{
 		}
 		
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void printAllBooksIBorrowed() {
 		try {
 			connect();
@@ -327,6 +468,26 @@ public class DatabaseUtil extends GlobalMembers{
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public int changePassword(String p2) {
 		int flagBit = 0;
 		try {
@@ -345,6 +506,26 @@ public class DatabaseUtil extends GlobalMembers{
 		return flagBit;	
 		
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void searchSongs(int i) {
 		try {
 			connect();
@@ -372,10 +553,32 @@ public class DatabaseUtil extends GlobalMembers{
 		}
 		
 	}
+	
+	
 	private final void connect() throws ClassNotFoundException, SQLException {
 		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		connection = DriverManager.getConnection(url,uname,dbPassword);
+		connection = DriverManager.getConnection(url,userName,databasePassword);
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void searchSongs(int i, String s) {
 		// TODO Auto-generated method stub
 		try{
@@ -405,6 +608,26 @@ public class DatabaseUtil extends GlobalMembers{
 			Console.musicSessions();
 		}
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void loadMusicList() {
 		try {
 			connect();
@@ -421,6 +644,26 @@ public class DatabaseUtil extends GlobalMembers{
 			// TODO: handle exception
 		}
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void allBooksInSection(Integer valueOf) {
 		int section = 0;
 		switch (valueOf) {
@@ -449,6 +692,26 @@ public class DatabaseUtil extends GlobalMembers{
 		determiner = "where shelfNumber = "+section+" AND available > 0";
 		searchBooksByKeyword(section, "*****");
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void retrievePodcasts(String nextLine) {
 		try {
 			connect();
@@ -482,6 +745,26 @@ public class DatabaseUtil extends GlobalMembers{
 		}
 		
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public void retriveMembers() {
 		cls();
 		try {
@@ -508,6 +791,26 @@ public class DatabaseUtil extends GlobalMembers{
 		
 		
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public int storeNewBooks(Book newBook) {
 		int successFlag = 0;
 		try {
@@ -531,6 +834,26 @@ public class DatabaseUtil extends GlobalMembers{
 		}
 		return successFlag;
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public int uploadNewSong(Music newSong) {
 		int successFlag = 0;
 		try {
@@ -552,6 +875,26 @@ public class DatabaseUtil extends GlobalMembers{
 		}
 		return successFlag;
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public int deleteMember(int id) {
 		int successFlag = 0;
 		try {
@@ -584,6 +927,26 @@ public class DatabaseUtil extends GlobalMembers{
 		}
 		return successFlag;
 	}
+	
+	/**
+	 * <h1></h1>
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	@Override
 	public int queryMembers(int i, String nextLine) {
 		int successFlag = 0;
 		try {

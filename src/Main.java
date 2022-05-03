@@ -67,10 +67,9 @@ public class Main
 	 * 
 	 */
 	public static void main(String[] args) {
-		
 		GlobalMembers.cls(); //wipes the terminal screen
-		
-		Console.methodDependancyInjection(new DatabaseUtil());;
+		GlobalMembers.dbUtil = new DataAccessUtil();
+		Console.startScreen();
 		
 	}
 	

@@ -3,14 +3,12 @@ import java.util.Scanner;
 public abstract class Authentication extends GlobalMembers {
 	
 	protected final static void register(Scanner sc){
-		var dbUtil = new DatabaseUtil();
 		cls();
 		Member.attributeCollection(sc);
 		dbUtil.registration(currentMember);
 	}
 
 	protected final static void signIn(Scanner sc) {
-		var dbUtil = new DatabaseUtil();
 		cls();
 		System.out.println("\n\t\t\t\t\tLog In");
 		System.out.print("\n\n\t\t\t\tEnter Email: ");

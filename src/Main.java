@@ -68,9 +68,20 @@ public class Main
 	 */
 	public static void main(String[] args) {
 		GlobalMembers.cls(); //wipes the terminal screen
-		GlobalMembers.dbUtil = new DataAccessUtil();
-		Console.startScreen();
-		
+//		GlobalMembers.dbUtil = new DataAccessUtility();
+//		Console.startScreen();
+		Console.membersHomePage();
+//		System.out.println("\n\t\t\t\t\t  "+bu+"Open Learning Library"+r);
+//		System.out.println("\n\t\t\t\t\t"+BLACK_BRIGHT+"preview - Digital Receipt"+r);
+//		System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+r);
+//		System.out.println("\n\t\t\t\t "+BLACK_BRIGHT+"Members FullName:"+r+BLUE+" Takudzwa Kucherera\t"+r);
+//		System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Book Borrowed:"+r+CYAN+" Pure Math\t"+r);
+//		System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Date Borrowed:"+r+GREEN+" 2022-04-11\t"+r);
+//		System.out.println("\n\t\t\t\t   "+BLACK_BRIGHT+"Date of Return:"+r+YELLOW+" 2022-05-10\t"+r);
+//		System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+r);		
+//		System.out.print("\n\n\t\t\t\t\t"+BLACK_BRIGHT+"Press Enter to continue:"+r+" ");
+//		sc.nextLine();
+	
 	}
 	
 }

@@ -24,12 +24,15 @@
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * 
@@ -44,7 +47,7 @@ import javax.sound.sampled.Clip;
  * @author Takudzwa Kucherera
  *
  */
-public class GlobalMembers{
+public class GlobalMembers implements CC{
 	
 	/**
 	 * 
@@ -250,11 +253,24 @@ public class GlobalMembers{
 	 * 
 	 */
 	public static void invalidChoice() {
+		char[] dts = {'.','.','.'};
 		cls();
-		System.out.println("\n\t\t\t\tYou have Selected an Invalid Choice");
+		System.out.println(RED_BOLD_BRIGHT+"\n\t\t\t\tInvalid Choice!!!"+r);
 		sleep(2000);
-		System.out.println("\n\t\t\t\tReturning to previous Menu");
-		sleep(2000);
+		System.out.print(BLACK_BOLD_BRIGHT+"\n\t\t\t\tReturning to previous Menu");
+		sleep(200);
+        for (int i = 0; i < dts.length; ++i) {
+            System.out.print(dts[i]);
+            sleep(1100);
+        }
+        System.out.println(r);
+	}
+	public static void loading() {
+		char[] dts = {'.','.','.'};
+        for (int i = 0; i < dts.length; ++i) {
+            System.out.print(dts[i]);
+            sleep(1100);
+        }
 	}
 	/**
 	 * 
@@ -270,12 +286,21 @@ public class GlobalMembers{
 	 */
 	public void serverError() {
 		cls();
-		System.out.println("\n\t\t\t\tServer error occured!");
+		char[] dts = {'.','.','.'};
+		System.out.println("\n\t\t\t\t"+RED_BOLD_BRIGHT+"Server error occured!"+r);
 		sleep(2000);
-		System.out.println("\n\t\t\t\tRedirecting to previous Menu");
-		sleep(2000);
+		System.out.print(BLACK_BOLD_BRIGHT+"\n\t\t\t\tReturning to previous Menu");
+		sleep(200);
+        for (int i = 0; i < dts.length; ++i) {
+            System.out.print(dts[i]);
+            sleep(1100);
+        }
+        System.out.println(r);
 	}
 	/**
+	 * @throws IOException 
+	 * @throws UnsupportedAudioFileException 
+	 * @throws LineUnavailableException 
 	 * 
 	 * 
 	 * 
@@ -287,7 +312,9 @@ public class GlobalMembers{
 	 * 
 	 * 
 	 */
-	public static void musicPlayer(Clip clip) throws Exception {
+	public static final void musicPlayer(Clip clip)
+			throws UnsupportedAudioFileException, IOException, LineUnavailableException 
+	{
 		file = new File(path);
 		audioStream = AudioSystem.getAudioInputStream(file);
 		clip = AudioSystem.getClip();
@@ -296,9 +323,10 @@ public class GlobalMembers{
 
 		while(!responce.equals("q")) {
 			cls();
-			System.out.println("\n\t\t\t\tP = play, S = stop, R = Reset, Q = Quit");
-			System.out.print("\n\t\t\t\tInput: ");
+			System.out.println("\n\t\t\t\t"+BLUE+"P = play, S = stop, R = Reset, Q = Quit"+r);
+			System.out.print("\n\t\t\t\t"+bu+"Input:"+r+" "+BLUE);
 			responce = sc.nextLine();
+			System.out.println(r);
 			responce.toLowerCase();
 			switch (responce) {
 			case "p": clip.start();

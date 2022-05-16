@@ -47,7 +47,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * @author Takudzwa Kucherera
  *
  */
-public class GlobalMembers implements CC{
+public abstract class GlobalMembers implements CC{
 	
 	/**
 	 * 
@@ -105,7 +105,7 @@ public class GlobalMembers implements CC{
 	 * 
 	 * 
 	 */
-	String choice;
+	static String choice;
 	
 	/**
 	 * 
@@ -255,7 +255,7 @@ public class GlobalMembers implements CC{
 	public static void invalidChoice() {
 		char[] dts = {'.','.','.'};
 		cls();
-		System.out.println(RED_BOLD_BRIGHT+"\n\t\t\t\tInvalid Choice!!!"+r);
+		System.out.println(RED_BOLD_BRIGHT+"\n\t\t\t\tInvalid Choice!!!"+R);
 		sleep(2000);
 		System.out.print(BLACK_BOLD_BRIGHT+"\n\t\t\t\tReturning to previous Menu");
 		sleep(200);
@@ -263,7 +263,7 @@ public class GlobalMembers implements CC{
             System.out.print(dts[i]);
             sleep(1100);
         }
-        System.out.println(r);
+        System.out.println(R);
 	}
 	public static void loading() {
 		char[] dts = {'.','.','.'};
@@ -287,7 +287,7 @@ public class GlobalMembers implements CC{
 	public void serverError() {
 		cls();
 		char[] dts = {'.','.','.'};
-		System.out.println("\n\t\t\t\t"+RED_BOLD_BRIGHT+"Server error occured!"+r);
+		System.out.println("\n\t\t\t\t"+RED_BOLD_BRIGHT+"Server error occured!"+R);
 		sleep(2000);
 		System.out.print(BLACK_BOLD_BRIGHT+"\n\t\t\t\tReturning to previous Menu");
 		sleep(200);
@@ -295,7 +295,7 @@ public class GlobalMembers implements CC{
             System.out.print(dts[i]);
             sleep(1100);
         }
-        System.out.println(r);
+        System.out.println(R);
 	}
 	/**
 	 * @throws IOException 
@@ -323,10 +323,10 @@ public class GlobalMembers implements CC{
 
 		while(!responce.equals("q")) {
 			cls();
-			System.out.println("\n\t\t\t\t"+BLUE+"P = play, S = stop, R = Reset, Q = Quit"+r);
-			System.out.print("\n\t\t\t\t"+bu+"Input:"+r+" "+BLUE);
+			System.out.println("\n\t\t\t\t"+BLUE+"P = play, S = stop, R = Reset, Q = Quit"+R);
+			System.out.print("\n\t\t\t\t"+BU+"Input:"+R+" "+BLUE);
 			responce = sc.nextLine();
-			System.out.println(r);
+			System.out.println(R);
 			responce.toLowerCase();
 			switch (responce) {
 			case "p": clip.start();

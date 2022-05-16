@@ -74,8 +74,8 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			connect();
 			query = "{call registerNewMember (?,?,?,?,?,?,?,?)}";
 			callableStatement = connection.prepareCall(query);
-			callableStatement.setString(1, member.getfName());
-			callableStatement.setString(2, member.getsName());
+			callableStatement.setString(1, member.getFirstName());
+			callableStatement.setString(2, member.getSurname());
 			callableStatement.setDate(3, member.getdOB());
 			callableStatement.setString(4, member.getHomeAddress());
 			callableStatement.setString(5, "Paid".toLowerCase());
@@ -86,7 +86,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			if (callableStatement.getInt(8) == 0) userFeedback = "\n\t\t\t\tUser already registered";
 			else userFeedback = (callableStatement.getInt(8) == 1) ? "\n\t\t\t\tMember registration succesfull!" : "\n\t\t\t\tRegistration failed!";
 			cls();
-			System.out.println(userFeedback + " : with " + callableStatement.getInt(8) + " rows affected");
+			System.out.println(userFeedback + " : with " + callableStatement.getInt(8) + " row(s) affected");
 			sleep(2000);
 			callableStatement.close();
 			connection.close();
@@ -137,15 +137,15 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			callableStatement.registerOutParameter(7, Types.DATE);
 			callableStatement.registerOutParameter(8, Types.VARCHAR);
 			callableStatement.executeQuery();
-			currentMember.setMembersID(callableStatement.getInt(4));
+			currentMember.setId(callableStatement.getInt(4));
 			cls();
 			userFeedback = (callableStatement.getInt(3) == 1) ? ( GREEN_BOLD_BRIGHT + "\n\t\t\t\tValidation Successful!") : ( RED_BOLD_BRIGHT + "\n\t\t\t\tEmail Address or Password Invalid!");
-			System.out.println(userFeedback + r);
+			System.out.println(userFeedback + R);
 			sleep(2000);	
 			if(callableStatement.getInt(3) == 1) {
-				member.setMembersID(callableStatement.getInt(4));
-				member.setfName(callableStatement.getString(5));
-				member.setsName(callableStatement.getString(6));
+				member.setId(callableStatement.getInt(4));
+				member.setFirstName(callableStatement.getString(5));
+				member.setSurname(callableStatement.getString(6));
 				member.setdOB(callableStatement.getDate(7));
 				member.setHomeAddress(callableStatement.getString(8));
 				getBookSections();
@@ -246,10 +246,10 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			if(hasResultset) {
 				rs = ps.getResultSet();
 				cls();
-				System.out.println("\n\t\t\t\t\t"+BLACK_BOLD_BRIGHT+" Type "+BLUE_BOLD_BRIGHT+"\"Exit\""+BLACK_BOLD_BRIGHT+" to return" + r);
-				System.out.println("\n\t\t\t\t\t    "+bu+"AVAILABLE BOOKS"+r);
+				System.out.println("\n\t\t\t\t\t"+BLACK_BOLD_BRIGHT+" Type "+BLUE_BOLD_BRIGHT+"\"Exit\""+BLACK_BOLD_BRIGHT+" to return" + R);
+				System.out.println("\n\t\t\t\t\t    "+BU+"AVAILABLE BOOKS"+R);
 				while(rs.next()) {
-					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+r+"\n");
+					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+R+"\n");
 					System.out.println("\t\t\t\t         ISBN : " + rs.getString(1));
 					System.out.println("\t\t\t\t        TITLE : " + rs.getString(2));
 					System.out.println("\t\t\t\t      EDITION : " + rs.getString(3));
@@ -258,15 +258,15 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 					System.out.println("\t\t\t\t  DISCRIPTION : " + rs.getString(6) + "\n");
 				}
 			}
-			System.out.print("\n\n\t\t\t\t"+bu+"Enter ISBN:"+r+" "+PURPLE_BOLD_BRIGHT);
+			System.out.print("\n\n\t\t\t\t"+BU+"Enter ISBN:"+R+" "+PURPLE_BOLD_BRIGHT);
 			try {
 				isbn = sc.nextLine();
-				System.out.println(r);
+				System.out.println(R);
 				if(isbn.equalsIgnoreCase("exit"))Console.membersHomePage();
 				Integer.valueOf(isbn);
 				connect();
 				callableStatement = connection.prepareCall("{call loanBook (?,?,?,?,?,?,?,?)}");
-				callableStatement.setInt(1, currentMember.getMembersID());
+				callableStatement.setInt(1, currentMember.getId());
 				callableStatement.setString(2, isbn);
 				callableStatement.registerOutParameter(3, Types.INTEGER);
 				callableStatement.registerOutParameter(4, Types.DATE);
@@ -277,15 +277,15 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 				callableStatement.execute();
 				if(callableStatement.getInt(3) == -10) {
 					cls();
-					System.out.println("\n\t\t\t\t"+RED_BOLD_BRIGHT+"Invalid Userid!"+r);
+					System.out.println("\n\t\t\t\t"+RED_BOLD_BRIGHT+"Invalid Userid!"+R);
 					sleep(1000);
-					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"Contact Administrator"+r);
+					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"Contact Administrator"+R);
 					sleep(2000);
 					searchBooksByKeyword(criteria, keyword);
 				}
 				else if(callableStatement.getInt(3) == 0) {
 					cls();
-					System.out.println("\n\t\t\t\t"+BLACK_BOLD_BRIGHT+"Sorry no more copies for this book."+r);
+					System.out.println("\n\t\t\t\t"+BLACK_BOLD_BRIGHT+"Sorry no more copies for this book."+R);
 					sleep(4000);
 					searchBooksByKeyword(criteria, keyword);
 					
@@ -297,34 +297,34 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 				}
 				else if(callableStatement.getInt(3) == 10) {
 					cls();
-					System.out.println("\n\t\t\t\t\t"+RED_BRIGHT+"Take note you cannot borrow the same book twice"+r);
-					System.out.println("\n\t\t\t\t\t"+BLACK_BRIGHT+"Try another book"+r);
+					System.out.println("\n\t\t\t\t\t"+RED_BRIGHT+"Take note you cannot borrow the same book twice"+R);
+					System.out.println("\n\t\t\t\t\t"+BLACK_BRIGHT+"Try another book"+R);
 					sleep(2000);
 					searchBooksByKeyword(criteria, keyword);
 				}
 				else if(callableStatement.getInt(3) == 1) {
 					cls();
-					System.out.println("\n\t\t\t\t\t  "+bu+"Open Learning Library"+r);
-					System.out.println("\n\t\t\t\t\t"+BLACK_BRIGHT+"preview - Digital Receipt"+r);
-					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+r);
-					System.out.println("\n\t\t\t\t "+BLACK_BRIGHT+"Members FullName:"+r+BLUE+" Takudzwa Kucherera\t"+r);
-					System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Book Borrowed:"+r+CYAN+" Pure Math\t"+r);
-					System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Date Borrowed:"+r+GREEN+" 2022-04-11\t"+r);
-					System.out.println("\n\t\t\t\t   "+BLACK_BRIGHT+"Date of Return:"+r+YELLOW+" 2022-05-10\t"+r);
-					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+r);		
-					System.out.print("\n\n\t\t\t\t\t"+BLACK_BRIGHT+"Press Enter to continue:"+r+" ");
+					System.out.println("\n\t\t\t\t\t  "+BU+"Open Learning Library"+R);
+					System.out.println("\n\t\t\t\t\t"+BLACK_BRIGHT+"preview - Digital Receipt"+R);
+					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+R);
+					System.out.println("\n\t\t\t\t "+BLACK_BRIGHT+"Members FullName:"+R+BLUE+" Takudzwa Kucherera\t"+R);
+					System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Book Borrowed:"+R+CYAN+" Pure Math\t"+R);
+					System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Date Borrowed:"+R+GREEN+" 2022-04-11\t"+R);
+					System.out.println("\n\t\t\t\t   "+BLACK_BRIGHT+"Date of Return:"+R+YELLOW+" 2022-05-10\t"+R);
+					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+R);		
+					System.out.print("\n\n\t\t\t\t\t"+BLACK_BRIGHT+"Press Enter to continue:"+R+" ");
 					sc.nextLine();
 					cls();
 					System.out.print("\n\n\t\t\t\t"+GREEN_BOLD_BRIGHT+"Redirecting to Home Page");
 					loading();
-					System.out.println(r);
+					System.out.println(R);
 					sleep(2500);
 					Console.membersHomePage();
 
 				}
 			} catch (NumberFormatException e) {
 				cls();
-				System.out.println("\n\t\t\t\t"+RED_BOLD_BRIGHT+"Invalid ISBN!"+r);
+				System.out.println("\n\t\t\t\t"+RED_BOLD_BRIGHT+"Invalid ISBN!"+R);
 				sleep(2000);
 				searchBooksByKeyword(criteria, keyword);
 			}
@@ -360,7 +360,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		try {
 			connect();
 			callableStatement = connection.prepareCall("{call returnBorrowedBooks (?)}");
-			callableStatement.setInt(1, currentMember.getMembersID());
+			callableStatement.setInt(1, currentMember.getId());
 			boolean x = callableStatement.execute();
 			if(x == true) {
 				int cntr = 0;
@@ -369,7 +369,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 					System.out.println("\t\t\t\t" + ++cntr + ": ISBN = " + rs.getString(1) + " Book-Name = " + rs.getString(2) + " Return-Date = " + rs.getDate(3));
 				}
 				if(cntr < 1) {
-					System.out.println("\n\t\t\t\t"+GREEN_BOLD_BRIGHT+"  No Pending Deadlines!"+r);
+					System.out.println("\n\t\t\t\t"+GREEN_BOLD_BRIGHT+"  No Pending Deadlines!"+R);
 					flagBit = 0;
 				}
 			}
@@ -404,22 +404,22 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			cls();
 			connect();
 			callableStatement = connection.prepareCall("{call hasReturned (?,?,?)}");
-			callableStatement.setInt(1, currentMember.getMembersID());
+			callableStatement.setInt(1, currentMember.getId());
 			callableStatement.setString(2, isbnChoice);
 			callableStatement.registerOutParameter(3, Types.INTEGER);
 			callableStatement.execute();
 			if (callableStatement.getInt(3) == 1) {
-				System.out.println("\n\t\t\t\t"+GREEN_BOLD_BRIGHT+"Book returned successfully!"+r);
+				System.out.println("\n\t\t\t\t"+GREEN_BOLD_BRIGHT+"Book returned successfully!"+R);
 				sleep(3000);
-				System.out.print("\n\n\t\t\t\t"+BLACK_BRIGHT+"Press Enter to continue:"+r);
+				System.out.print("\n\n\t\t\t\t"+BLACK_BRIGHT+"Press Enter to continue:"+R);
 				sc.nextLine();
 				Console.accountRealatedInfo();
 			}
 			else throw new Exception();
 		} catch (Exception e) {
-			System.out.println("\n\t\t\t\t"+RED+"Returning book failed!"+r);
+			System.out.println("\n\t\t\t\t"+RED+"Returning book failed!"+R);
 			sleep(2000);
-			System.out.print("\n\n\t\t\t\t"+BLACK_BRIGHT+"Press Enter to continue:"+r);
+			System.out.print("\n\n\t\t\t\t"+BLACK_BRIGHT+"Press Enter to continue:"+R);
 			sc.nextLine();			
 			Console.returnBook();
 		}
@@ -449,7 +449,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		try {
 			connect();
 			callableStatement = connection.prepareCall("{call printAllBooksIBorrowed (?)}");
-			callableStatement.setInt(1, currentMember.getMembersID());
+			callableStatement.setInt(1, currentMember.getId());
 			boolean x = callableStatement.execute();
 			if(x == true) {
 				int cntr = 0;
@@ -495,7 +495,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		try {
 			connect();
 			callableStatement = connection.prepareCall("{call changePassword(?,?)}");
-			callableStatement.setInt(1, currentMember.getMembersID());
+			callableStatement.setInt(1, currentMember.getId());
 			callableStatement.setString(2, p2);
 //			callableStatement.registerOutParameter(3, Types.INTEGER);
 			int x = callableStatement.executeUpdate();
@@ -542,7 +542,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 				counter++;
 			}
 			if(counter < 1) {
-				System.out.println("\n\t\t\t\t"+RED+"Unfortunately no Music was found"+r);
+				System.out.println("\n\t\t\t\t"+RED+"Unfortunately no Music was found"+R);
 				sleep(3000);
 				Console.musicSessions();
 			}
@@ -594,7 +594,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 				counter++;
 			}
 			if(counter < 1) {
-				System.out.println("\n\t\t\t\t"+RED+"Unfortunately no Music was found"+r);
+				System.out.println("\n\t\t\t\t"+RED+"Unfortunately no Music was found"+R);
 				sleep(3000);
 				Console.musicSessions();
 			}
@@ -723,10 +723,10 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 					counter++;
 				}
 				if(counter < 1) {
-					System.out.println(r);
-					System.out.println("\n\t\t\t\t"+RED+"Unfortunately no Podcasts are Currently available"+r);
+					System.out.println(R);
+					System.out.println("\n\t\t\t\t"+RED+"Unfortunately no Podcasts are Currently available"+R);
 					sleep(2000);
-					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"Redirection to previous Menu"+r);
+					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"Redirection to previous Menu"+R);
 					sleep(2000);
 					Console.membersHomePage();
 				}
@@ -898,24 +898,29 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			callableStatement.registerOutParameter(3, Types.INTEGER);
 			callableStatement.execute();
 			if(callableStatement.getInt(3) == 0) {
-				System.out.println("\n\t\t\tMember with ID = " + id + " does not exist in database");
-				sleep(3000);
+				System.out.println(RED_BOLD_BRIGHT+"\n\t\t\t\tMember with ID = " + id + " does not exist in database"+R);
+				System.out.print("\n\n\t\t\t\t"+BU+"Press Enter to return:"+R);
+				sc.nextLine();
 			}
 			else {
-				System.out.println("\t\t\t\t1: Type \"accept\" to proceed with deleting the following Member: ");
+				System.out.println("\t\t\t\t1: Type "+RED_BRIGHT+"\"accept\""+R+" to proceed with deleting the following Member: ");
 				System.out.println("\t\t\t\t2: Type anything else to cancel process");
 				System.out.println("\n\t\t\t\tMemberId=" + id + "\tFull Name=" + callableStatement.getString(2));
-				System.out.print("\n\n\t\t\t\tEnter: ");
+				System.out.print("\n\n\t\t\t\t"+BU+"Enter:"+R+" "+RED);
 				choice = sc.nextLine();
+				System.out.println(R);
 				if(choice.equalsIgnoreCase("accept")) {
 					callableStatement = connection.prepareCall("{call deleteMember (?,?)}");
 					callableStatement.setInt(1, id);
 					callableStatement.registerOutParameter(2, Types.INTEGER);
-					callableStatement.execute();
+					callableStatement.executeUpdate();
 					if(callableStatement.getInt(2) == 1) successFlag = 1;
 				}
 			}
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			sc.next();
 			serverError();
 		}
 		return successFlag;
@@ -953,12 +958,14 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 				int counter = 0;
 				cls();
 				System.out.println("\n\t\t\t\t\t\tSearch Result\n");
+				System.out.println("\n\t\t\t\t"+BU+"======================================"+R);
 				while(rs.next()) {
-					System.out.println("\t\t\t\t"+ counter +"\tID = " + rs.getInt(1) + "\tFullName = " + rs.getString(2) + "\tTotalBooksBorrowed = " + rs.getInt(3));
+					System.out.println("\t\t\t\t  "+ counter +"\tID = " + rs.getInt(1) + "\tFullName = " + rs.getString(2) + "\tTotalBooksBorrowed = " + rs.getInt(3));
 					counter++;
 				}
 				if(counter < 1) System.out.println("\n\t\t\t\tUnfortunately no members were found");
 				else successFlag = 1;
+				System.out.println("\n\t\t\t\t"+BU+"======================================"+R);
 				
 			}
 			else throw new Exception();

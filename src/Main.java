@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.net.ServerSocket;
+
 /*
  * Copyright (c) 2022 NUST and/or its affiliates. All rights reserved.
  * NUST PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -61,27 +64,19 @@ public class Main
 	 * 
 	 * @param args Unused parameter.
 	 * @return Nothing is returned by this method.
+	 * @throws IOException 
 	 * @throws AuthenticationException
 	 * @see <a>https://www.tutorialspoint.com/spring/
 	 * constructor_based_dependency_injection.htm</a>
-	 * 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args){
+//		ServerSocket serverSocket = new ServerSocket(1234);
+//		Server server = new Server(serverSocket);
+//		server.startServer();
+		
 		GlobalMembers.cls(); //wipes the terminal screen
-//		GlobalMembers.dbUtil = new DataAccessUtility();
-//		Console.startScreen();
-		Console.membersHomePage();
-//		System.out.println("\n\t\t\t\t\t  "+bu+"Open Learning Library"+r);
-//		System.out.println("\n\t\t\t\t\t"+BLACK_BRIGHT+"preview - Digital Receipt"+r);
-//		System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+r);
-//		System.out.println("\n\t\t\t\t "+BLACK_BRIGHT+"Members FullName:"+r+BLUE+" Takudzwa Kucherera\t"+r);
-//		System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Book Borrowed:"+r+CYAN+" Pure Math\t"+r);
-//		System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Date Borrowed:"+r+GREEN+" 2022-04-11\t"+r);
-//		System.out.println("\n\t\t\t\t   "+BLACK_BRIGHT+"Date of Return:"+r+YELLOW+" 2022-05-10\t"+r);
-//		System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+r);		
-//		System.out.print("\n\n\t\t\t\t\t"+BLACK_BRIGHT+"Press Enter to continue:"+r+" ");
-//		sc.nextLine();
-	
+		GlobalMembers.dbUtil = new DataAccessUtility();
+		Console.startScreen();
 	}
 	
 }

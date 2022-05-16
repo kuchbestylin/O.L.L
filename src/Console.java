@@ -1,3 +1,7 @@
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 /*
  * Copyright (c) 2022 NUST and/or its affiliates. All rights reserved.
  * NUST PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -24,14 +28,20 @@
  */
 
 /**
- * The {@code final Console} class contains most if not all of the presentation
- * responsibilities such as displaying choices to users and taking in their
- * choices(user input).
+ * The final {@code Console} class contains most if not all of the presentation
+ * responsibilities specifically for he user such as displaying choices to users
+ * and taking in their choices(user input).
  * 
  * <p> This class cannot be extended nor altered for it represents a solid
- * implementation (Concept).
+ * implementation(Concept) that should always be in a single place. All methods
+ * are final</p>
  *
  * @author T. Kucherera
+ * @author Chris Mukadi
+ * @author Helao Hangula
+ * @author Tjihimise Kaunatjike
+ * @author T. Bvocho
+ * @author Linus Amukuhu
  * @version 1.3
  * @since 2022-04-01
  */
@@ -56,24 +66,28 @@ public final class Console
     			+ "different authors gathered\n\t\t\t\there for you to read online "
     			+ "or offline which we hope you find\n\t\t\t\tenjoyable. Feedback "
     			+ "is welcome - feel free to proceed as guest\n\t\t\t\tor register "
-    			+ "with us at N$550 a year.\n" + r);
+    			+ "with us at N$550 a year.\n" + R);
         System.out.println("\n\t\t\t\tPress 1: Sign In");
         System.out.println("\t\t\t\tPress 2: Register as new user.");
         System.out.println("\t\t\t\tPress 3: Continue as Guest.\n");
         System.out.print("\t\t\t\tInput: " + PURPLE_BRIGHT);
         String userInput = sc.nextLine();
-        System.out.print(r);
+        System.out.print(R);
         try {
+        	if(userInput.equalsIgnoreCase("I am admin")) ConfidentialViews.start();
+        	else
             switch (Integer.valueOf(userInput)) {
                 case 1: Console.signIn(sc);
                 		break;
                 case 2: Console.register(sc);
+                		Console.signIn(sc);
                 		break;
                 case 3: Console.guestPage();
                 		break;
             }
         }catch (Exception exception) {
-            System.out.println("\n\t\t\t\tInvalid Input!");
+            System.out.println("\n\t\t\t\t"+RED_BRIGHT+"Invalid Input!"+R);
+            sleep(2000);
             Console.cls();
             Console.startScreen();
         }
@@ -109,18 +123,19 @@ public final class Console
     protected static void membersHomePage() {
         Console.cls();
         
-        System.out.println(bu +"\n\t\t\t\t\tWelcome back " + currentMember.getfName()+"!" + r + BLACK_BRIGHT); 
-        System.out.println(t4 + "    Type "+BLUE_BOLD_BRIGHT+"\"logout\""+r+BLACK_BRIGHT+" to sign-Out\n\n\t\t\t\t"
+        System.out.println(BU +"\n\t\t\t\t\tWelcome back " + currentMember.getFirstName()+"!" + R + BLACK_BRIGHT); 
+        System.out.println(t4 + "    Type "+BLUE_BOLD_BRIGHT+"\"logout\""+R+BLACK_BRIGHT+" to sign-Out\n\n\t\t\t\t"
         		+ "Select either of the following options\n\t\t\t\t"
-        		+ "=========================================\n\n\t\t\t\t" + r
+        		+ "=========================================\n\n\t\t\t\t" + R
         		+ "    1: Press \"1\" to browse Books\n\n\t\t\t\t"
         		+ "    2: Press \"2\" to listen to Podcasts\n\n\t\t\t\t"
         		+ "    3: Press \"3\" for music Sessions\n\n\t\t\t\t"
-        		+ "    4: Press \"4\" for Account Detail");
-        System.out.println(BLACK_BRIGHT+"\n\t\t\t\t========================================="+r);
-        System.out.print(  bu+ "\n\t\t\t\tEnter:" + r+ " " + BLUE);
+        		+ "    4: Press \"4\" for Account Detail\n\n\t\t\t"
+        		+ "	    5: Press \"5\" to enter Live Chart");
+        System.out.println(BLACK_BRIGHT+"\n\t\t\t\t========================================="+R);
+        System.out.print(  BU+ "\n\t\t\t\tEnter:" + R+ " " + BLUE);
         String arg1 = Console.sc.nextLine();
-        System.out.print(r);
+        System.out.print(R);
         Console.routeActions(arg1);
         
     }
@@ -159,15 +174,15 @@ public final class Console
                 if (Integer.parseInt(chosenAction) == 1) {
                     System.out.println("\n\t\t\t\t"
                     		+ "======================================="
-                    		+ "\n\t\t\t\t"+"Type "+BLUE+"\"#\""+r+" to return to previous section"+r
-                    		+ "\n\n\t\t\t\t"+bu+"Select a retrieval Criteria\n\n\t\t\t\t"+r
+                    		+ "\n\t\t\t\t"+"Type "+BLUE+"\"#\""+R+" to return to previous section"+R
+                    		+ "\n\n\t\t\t\t"+BU+"Select a retrieval Criteria\n\n\t\t\t\t"+R
                     		+ "1: Press \"1\" to proceed to book Sections.\n\n\t\t\t\t"
                     		+ "2: Press \"2\" to search by keywords.\n\n\t\t\t\t"
                     		+ "3: Press \"3\" to search by author.\n\n\t\t\t\t"
                     		+ "4: Press \"4\" to search by category\n");
-                    System.out.print(bu+"\t\t\t\tEnter:"+r+" "+BLUE_BOLD_BRIGHT);
+                    System.out.print(BU+"\t\t\t\tEnter:"+R+" "+BLUE_BOLD_BRIGHT);
                     String string2 = Console.sc.nextLine();
-                    System.out.println(r);
+                    System.out.println(R);
                     if (string2.equals("#")) Console.membersHomePage();
                     else if (Integer.parseInt(string2) == 1) Console.bookSections();
                     else if (
@@ -182,10 +197,12 @@ public final class Console
                 else if (Integer.parseInt(chosenAction) == 2) Console.podcasts();
                 else if (Integer.parseInt(chosenAction) == 3) Console.musicSessions();
                 else if (Integer.parseInt(chosenAction) == 4) Console.accountRealatedInfo();
+                else if (Integer.parseInt(chosenAction) == 5) {
+                	currentMember.liveChart();
+                	Console.membersHomePage();
+                }
             }
             catch (Exception e) {
-            	System.out.println(e.getMessage());
-            	sleep(90000);
                 invalidChoice();
                 Console.membersHomePage();
             }
@@ -214,15 +231,15 @@ public final class Console
     protected static void accountRealatedInfo() {
     	var dbUtil = new DataAccessLogic() {};
         Console.cls();
-        System.out.println("\n\t\t\t\t\t  " + currentMember.getfName() + " " +
-        		currentMember.getsName() + "\n\n\t\t\t\t"+BLACK_BOLD_BRIGHT+"Type"
-        		+ "  "+BLUE+"\"#\""+r+BLACK_BOLD_BRIGHT+" to return to previous"
-        		+ " Menu"+r+"\n\n\t\t\t\t"+bu+"Choose any option:"+r+"\n\n\t\t\t\t"
+        System.out.println("\n\t\t\t\t\t  " + currentMember.getFirstName() + " " +
+        		currentMember.getSurname() + "\n\n\t\t\t\t"+BLACK_BOLD_BRIGHT+"Type"
+        		+ "  "+BLUE+"\"#\""+R+BLACK_BOLD_BRIGHT+" to return to previous"
+        		+ " Menu"+R+"\n\n\t\t\t\t"+BU+"Choose any option:"+R+"\n\n\t\t\t\t"
         		+ "    Type \"1\" to Change Credentials\n\n\t\t\t\t    Type \"2\" to Check Deadlines\n\n\t\t\t\t"
         		+ "    Type \"3\" to Return Book");
-        System.out.print("\n\t\t\t\t"+bu+"Enter:"+r+" "+BLUE);
+        System.out.print("\n\t\t\t\t"+BU+"Enter:"+R+" "+BLUE);
         String string = sc.nextLine();
-        System.out.println(r);
+        System.out.println(R);
         if (string.equals("#")) Console.membersHomePage();
         else {
             try {
@@ -265,19 +282,19 @@ public final class Console
     	var dbUtil = new DataAccessUtility();
         Console.cls();
         System.out.println("\n\t\t\t\tSelect book to return: ");
-        System.out.println("\t\t\t\ttype "+BLUE+"\"exit\""+r+" to return to Main Menu");
-        System.out.println("\n\t\t\t\t"+bu+"======================================"+r);
+        System.out.println("\t\t\t\ttype "+BLUE+"\"exit\""+R+" to return to Main Menu");
+        System.out.println("\n\t\t\t\t"+BU+"======================================"+R);
         int n = dbUtil.printBorrowedBooks();
-        System.out.println("\n\t\t\t\t"+bu+"======================================"+r);
+        System.out.println("\n\t\t\t\t"+BU+"======================================"+R);
         switch (n) {
-            case 0: System.out.print("\n\t\t\t\t"+bu+"Press any key to exit: "+r);
+            case 0: System.out.print("\n\t\t\t\t"+BU+"Press any key to exit: "+R);
             		sc.nextLine();
             		Console.accountRealatedInfo();
             		break;
             		
-            case 1: System.out.print("\n\t\t\t"+bu+"Enter Books ISBN:"+r+" "+BLUE);
+            case 1: System.out.print("\n\t\t\t"+BU+"Enter Books ISBN:"+R+" "+BLUE);
 		            String string = sc.nextLine();
-		            System.out.println(r);
+		            System.out.println(R);
 		            if (string.equalsIgnoreCase("exit")) {
 		            	Console.membersHomePage();
 		                break;
@@ -308,7 +325,7 @@ public final class Console
     private static void checkDeadlines() {
     	var dbUtil = new DataAccessUtility();
         Console.cls();
-        System.out.println("\n\t\t\t\t"+bu+"These are all currently borrowed books"+r+"\n");
+        System.out.println("\n\t\t\t\t"+BU+"These are all currently borrowed books"+R+"\n");
         dbUtil.printAllBooksIBorrowed();
         System.out.print("\n\t\t\t\tPress any key to exit: ");
         sc.nextLine();
@@ -337,14 +354,14 @@ public final class Console
         block6: {
             Console.cls();
             System.out.println("\n\t\t\t\tSelect one of the following options:");
-            System.out.println("\t\t\t\tType "+BLUE+"\"back\""+r+" to return to previous Menu");
-            System.out.println("\n\t\t\t\t"+bu+"======================================"+r);
+            System.out.println("\t\t\t\tType "+BLUE+"\"back\""+R+" to return to previous Menu");
+            System.out.println("\n\t\t\t\t"+BU+"======================================"+R);
             System.out.println("\n\t\t\t\t    Press \"1\" to Change Email.");
             System.out.println("\n\t\t\t\t    Press \"2\" to Change Password.");
-            System.out.println("\n\t\t\t\t"+bu+"======================================"+r);
-            System.out.print("\n\t\t\t\t"+bu+"Enter:"+r+" "+BLUE);
+            System.out.println("\n\t\t\t\t"+BU+"======================================"+R);
+            System.out.print("\n\t\t\t\t"+BU+"Enter:"+R+" "+BLUE);
             String string = sc.nextLine();
-            System.out.println(r);
+            System.out.println(R);
             if (string.equalsIgnoreCase("back")) Console.accountRealatedInfo();
             else {
 	            try {
@@ -389,35 +406,35 @@ public final class Console
     	var dbUtil = new DataAccessLogic() {};
         System.out.print("\n\n\t\t\t\tEnter Current Password: "+WHITE_BACKGROUND);
         String enteredPassword = sc.nextLine();
-        System.out.println(r);
+        System.out.println(R);
         if (enteredPassword.equals(currentMember.getPassword())) {
             System.out.print("\n\n\t\t\t\t  Enter New Password: "+WHITE_BACKGROUND);
             String string2 = sc.nextLine();
-            System.out.println(r);
+            System.out.println(R);
             System.out.print("\n\t\t\t\tConfirm New Password: "+WHITE_BACKGROUND);
             String string3 = sc.nextLine();
-            System.out.println(r);
+            System.out.println(R);
             if (string2.equals(string3)) {
                 int n = dbUtil.changePassword(string3);
                 if (n == 1) {
                     Console.cls();
-                    System.out.println("\n\t\t\t\t"+GREEN_BOLD_BRIGHT+"Password successfully changed!"+r);
-                    System.out.print("\n\n\n\t\t\t"+BLACK_BRIGHT+"Press enter to return: "+r);
+                    System.out.println("\n\t\t\t\t"+GREEN_BOLD_BRIGHT+"Password successfully changed!"+R);
+                    System.out.print("\n\n\n\t\t\t"+BLACK_BRIGHT+"Press enter to return: "+R);
                     sc.nextLine();
                     Console.accountRealatedInfo();
                 }
             } else {
                 cls();
-                System.out.println("\n\t\t\t\t"+RED_BOLD_BRIGHT+"Password could not be change"+r);
+                System.out.println("\n\t\t\t\t"+RED_BOLD_BRIGHT+"Password could not be change"+R);
                 sleep(1000);
                 System.out.print("\n\n\t\t\t\t"+BLACK_BRIGHT+"Reverting Changes");
                 loading();
-                System.out.println(r);
+                System.out.println(R);
                 Console.accountRealatedInfo();
             }
         } else {
             Console.cls();
-            System.out.println("\n\t\t\t\t"+RED_BOLD_BRIGHT+"Password did not match!"+r);
+            System.out.println("\n\t\t\t\t"+RED_BOLD_BRIGHT+"Password did not match!"+R);
             Console.sleep((int)2000);
             Console.changePassword();
         }
@@ -474,18 +491,18 @@ public final class Console
     	cls();
     	var dbUtil = new DataAccessLogic() {
 		};
-        System.out.println("\n\t\t\t\t"+BLACK_BOLD_BRIGHT+"Welcome to the Music Hub " + currentMember.getfName()+r);
-        System.out.println("\t\t\t\t"+BLACK_BOLD_BRIGHT+"Type "+BLUE+"\"#\""+r+BLACK_BOLD_BRIGHT+" to return to previous Menu"+r);
-        System.out.println("\n\t\t\t\t"+bu+"Please select any search criteria:"+r);
-        System.out.println("\n\t\t\t\t"+bu+"==================================="+r);
+        System.out.println("\n\t\t\t\t"+BLACK_BOLD_BRIGHT+"Welcome to the Music Hub " + currentMember.getFirstName()+R);
+        System.out.println("\t\t\t\t"+BLACK_BOLD_BRIGHT+"Type "+BLUE+"\"#\""+R+BLACK_BOLD_BRIGHT+" to return to previous Menu"+R);
+        System.out.println("\n\t\t\t\t"+BU+"Please select any search criteria:"+R);
+        System.out.println("\n\t\t\t\t"+BU+"==================================="+R);
         System.out.println("\n\t\t\t\t    1 : Browse all songs");
         System.out.println("\n\t\t\t\t    2 : Search by title keywords");
         System.out.println("\n\t\t\t\t    3 : Search by artist name");
         System.out.println("\n\t\t\t\t    4 : Search by genre");
-        System.out.println("\n\t\t\t\t"+bu+"==================================="+r);
-        System.out.print("\n\n\t\t\t\t"+bu+"Enter:"+r+" "+BLUE);
+        System.out.println("\n\t\t\t\t"+BU+"==================================="+R);
+        System.out.print("\n\n\t\t\t\t"+BU+"Enter:"+R+" "+BLUE);
         String string = sc.nextLine();
-        System.out.println(r);
+        System.out.println(R);
         if(string.equals("#")) Console.membersHomePage();
         try {
             int n = Integer.parseInt(string);
@@ -493,57 +510,57 @@ public final class Console
             switch (n) {
                 case 1:
                     dbUtil.searchSongs(1);
-                    System.out.print("\n\n\t\t\t"+bu+"Enter key:"+r+" "+BLUE);
+                    System.out.print("\n\n\t\t\t"+BU+"Enter key:"+R+" "+BLUE);
                     String string2 = sc.nextLine();
-                    System.out.println(r);
+                    System.out.println(R);
                     Integer.parseInt(string2);
                     path = "C:\\eclipse-workspace\\0.L.L\\src\\grindin.wav";
                     musicPlayer(clip);
                     break;
                 case 2:
-                	System.out.print("\n\n\t\t\t"+bu+"Enter keyword:"+r+" "+BLUE);
+                	System.out.print("\n\n\t\t\t"+BU+"Enter keyword:"+R+" "+BLUE);
                 	String keyword = sc.nextLine();
-                	System.out.println(r);
+                	System.out.println(R);
                     dbUtil.searchSongs(2, keyword);
-                    System.out.print("\n\n\t\t\t"+BLACK_BOLD_BRIGHT+"Enter key:"+r+" "+BLUE);
+                    System.out.print("\n\n\t\t\t"+BLACK_BOLD_BRIGHT+"Enter key:"+R+" "+BLUE);
                     String string3 = sc.nextLine();
-                    System.out.println(r);
+                    System.out.println(R);
                     Integer.parseInt(string3);
                     path = (String)treeMapMusic.get(Integer.parseInt(string3));
                     musicPlayer(clip);
                     break;
                 case 3:
-                    System.out.print("\n\t\t\t\t"+BLACK_BOLD_BRIGHT+"Enter Artist Name:"+r+" ");
+                    System.out.print("\n\t\t\t\t"+BLACK_BOLD_BRIGHT+"Enter Artist Name:"+R+" ");
                     String artistName = sc.nextLine();
-                    System.out.println(r);
+                    System.out.println(R);
                     dbUtil.searchSongs(3, artistName);
-                    System.out.print("\n\n\t\t\t"+BLACK_BOLD_BRIGHT+"Enter key:"+r+" "+BLUE);
+                    System.out.print("\n\n\t\t\t"+BLACK_BOLD_BRIGHT+"Enter key:"+R+" "+BLUE);
                     String string4 = sc.nextLine();
-                    System.out.println(r);
+                    System.out.println(R);
                     Integer.parseInt(string4);
                     path = (String)treeMapMusic.get(Integer.parseInt(string4));
                     musicPlayer(clip);
                     break;
                 case 4: 
                     Console.cls();
-                    System.out.println("\n\t\t\t\t"+bu+"Please Select Any Genre"+r);
-                    System.out.println("\n\t\t\t\t   Select \"1\" for "+CYAN+"Gospel"+r+"\n");
-                    System.out.println("\t\t\t\t   Select \"2\" for "+CYAN+"HipHop"+r+"\n");
-                    System.out.println("\t\t\t\t   Select \"3\" for "+CYAN+"AfroHouse"+r+"\n");
-                    System.out.println("\t\t\t\t   Select \"4\" for "+CYAN+"Oldschool"+r+"\n");
-                    System.out.println("\t\t\t\t   Select \"5\" for "+CYAN+"80s"+r+"\n");
-                    System.out.println("\t\t\t\t   Select \"6\" for "+CYAN+"Lo-fi"+r+"");
-                    System.out.print("\n\n\t\t\t\t"+bu+"Genre Code:"+r+" "+BLUE);
+                    System.out.println("\n\t\t\t\t"+BU+"Please Select Any Genre"+R);
+                    System.out.println("\n\t\t\t\t   Select \"1\" for "+CYAN+"Gospel"+R+"\n");
+                    System.out.println("\t\t\t\t   Select \"2\" for "+CYAN+"HipHop"+R+"\n");
+                    System.out.println("\t\t\t\t   Select \"3\" for "+CYAN+"AfroHouse"+R+"\n");
+                    System.out.println("\t\t\t\t   Select \"4\" for "+CYAN+"Oldschool"+R+"\n");
+                    System.out.println("\t\t\t\t   Select \"5\" for "+CYAN+"80s"+R+"\n");
+                    System.out.println("\t\t\t\t   Select \"6\" for "+CYAN+"Lo-fi"+R+"");
+                    System.out.print("\n\n\t\t\t\t"+BU+"Genre Code:"+R+" "+BLUE);
                     String string5 = sc.nextLine();
-                    System.out.println(r);
+                    System.out.println(R);
                     int n2 = Integer.parseInt(string5);
                     if (!(n2 == 1 | n2 == 2 | n2 == 3 | n2 == 4 | n2 == 5 | n2 == 6)) {
                         throw new IllegalArgumentException();
                     }
                     dbUtil.searchSongs(4, string5);
-                    System.out.print("\n\n\t\t\t"+BLACK_BOLD_BRIGHT+"Enter key:"+r+" "+BLUE);
+                    System.out.print("\n\n\t\t\t"+BLACK_BOLD_BRIGHT+"Enter key:"+R+" "+BLUE);
                     String string6 = sc.nextLine();
-                    System.out.println(r);
+                    System.out.println(R);
                     Integer.parseInt(string6);
                     GlobalMembers.path = (String)GlobalMembers.treeMapMusic.get(Integer.parseInt(string6));
                     musicPlayer(clip);
@@ -592,15 +609,15 @@ public final class Console
     	var dbUtil = new DataAccessUtility();
         Console.cls();
         if (n == 2) {
-            System.out.print("\n\t\t\t\t"+bu+"Enter keyword:"+r+" ");
+            System.out.print("\n\t\t\t\t"+BU+"Enter keyword:"+R+" ");
             dbUtil.searchBooksByKeyword(n.intValue(), sc.nextLine());
         }
         else if (n == 3) {
-            System.out.print("\n\t\t\t\t"+bu+"Enter author:"+r+" ");
+            System.out.print("\n\t\t\t\t"+BU+"Enter author:"+R+" ");
             dbUtil.searchBooksByKeyword(n.intValue(), sc.nextLine());
         }
         else if (n == 4) {
-            System.out.print("\n\t\t\t\t"+bu+"Enter category:"+r+" ");
+            System.out.print("\n\t\t\t\t"+BU+"Enter category:"+R+" ");
             dbUtil.searchBooksByKeyword(n.intValue(), sc.nextLine());
         }
     }
@@ -616,9 +633,9 @@ public final class Console
     
     private static void podcasts() {
     	var dbUtil = new DataAccessUtility();
-        System.out.println("\n\t\t\t\tSearch by "+CYAN+"Name"+r+" or "+CYAN+"GuestSpeaker"+r);
+        System.out.println("\n\t\t\t\tSearch by "+CYAN+"Name"+R+" or "+CYAN+"GuestSpeaker"+R);
         System.out.println("\t\t\t\tPress Enter to retain All");
-        System.out.print("\n\n\t\t\t\t"+bu+"Search:"+r+" "+BLUE_BRIGHT);
+        System.out.print("\n\n\t\t\t\t"+BU+"Search:"+R+" "+BLUE_BRIGHT);
         dbUtil.retrievePodcasts(sc.nextLine());
     }
 
@@ -640,12 +657,12 @@ public final class Console
         dbUtil.getBookSections();
         Console.cls();
         System.out.println("\n\t\t\t\t==========================================\n");
-        System.out.println("\t\t\t\t"+bu+"Choose Section of Interest"+r);
+        System.out.println("\t\t\t\t"+BU+"Choose Section of Interest"+R);
         int n = 1;
-        for (String string : Console.bookSections) System.out.println("\n\t\t\t\t    Press: \"" + n++ + "\" for " + WHITE_BOLD_BRIGHT +string +r);
-        System.out.print("\n\n\t\t\t\t"+bu+"Enter Section:"+r+" "+PURPLE_BOLD_BRIGHT);
+        for (String string : Console.bookSections) System.out.println("\n\t\t\t\t    Press: \"" + n++ + "\" for " + WHITE_BOLD_BRIGHT +string +R);
+        System.out.print("\n\n\t\t\t\t"+BU+"Enter Section:"+R+" "+PURPLE_BOLD_BRIGHT);
         String string = Console.sc.nextLine();
-        System.out.println(r);
+        System.out.println(R);
         try {
             dbUtil.allBooksInSection(Integer.valueOf(string));
         }
@@ -654,5 +671,6 @@ public final class Console
             Console.bookSections();
         }
     }
+    
 
 }

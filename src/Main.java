@@ -70,10 +70,6 @@ public class Main
 	 * constructor_based_dependency_injection.htm</a>
 	 */
 	public static void main(String[] args){
-//		ServerSocket serverSocket = new ServerSocket(1234);
-//		Server server = new Server(serverSocket);
-//		server.startServer();
-		
 		GlobalMembers.cls(); //wipes the terminal screen
 		GlobalMembers.dbUtil = new DataAccessUtility();
 		Console.startScreen();

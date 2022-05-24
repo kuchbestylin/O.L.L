@@ -1,73 +1,82 @@
+/*
 
 
-import java.sql.*; //This is step 1
-
-/**
  * 
- * 
- * <h1>How SQL SERVER JDBC works</h1>
- * 
- * <h6>When ever you work with Microsoft JDBC you have to follow these 7 steps:</h6>
- * <ol>
- * 		<li>Import the package --> java.sql</li>
- * 		<li>Load and Register the driver --> com.microsoft.sqlserver.jdbc</li>
- * 		<li>Create a connection</li>
- * 		<li>Create a statement</li>
- * 		<li>Execute the query</li>
- * 		<li>Process the results</li>
- * 		<li>Close connection</li>
- * </li>
- * 
- * @author Takudzwa Kucherera
+ * Copyright (c) 2022 NUST and/or its affiliates. All rights reserved.
+ * NUST PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  *
  */
-public abstract class DataAccessLogic extends GlobalMembers implements IDataAccessObject{
-	String query;
-	Connection connection;
-	Statement statement;
-	ResultSet rs;
-	String userFeedback;
-	CallableStatement callableStatement;
-	PreparedStatement ps;
-	String determiner;
-	
 
-	/**
+import java.sql.*;
+import java.time.LocalDate;
+
+/**
+ * The final {@code Console} class contains most if not all of the presentation
+ * responsibilities specifically for he user such as displaying choices to users
+ * and taking in their choices(user input).
+ * 
+ * <p> This method cannot be instantiated but extended only for it represents a
+ * an concept that is only intended to be reused.</p>
+ *
+ * @author T. Kucherera
+ * @author Chris Mukadi
+ * @author Helao Hangula
+ * @author Tjihimise Kaunatjike
+ * @author T. Bvocho
+ * @author Linus Amukuhu
+ * @version 1.3
+ * @since 2022-04-01
+ */
+public abstract class DataAccessLogic 
+	extends GlobalMembers implements IDataAccessObject
+{
+
+	/*
+	 * <h1>How SQL SERVER JDBC works</h1>
 	 * 
+	 * <h6>When ever you work with Microsoft JDBC you have to follow these 7 steps:</h6>
+	 * <ol>
+	 * 		<li>Import the package --> java.sql</li>
+	 * 		<li>Load and Register the driver --> com.microsoft.sqlserver.jdbc</li>
+	 * 		<li>Create a connection</li>
+	 * 		<li>Create a statement</li>
+	 * 		<li>Execute the query</li>
+	 * 		<li>Process the results</li>
+	 * 		<li>Close connection</li>
+	 * </li>
 	 */
+	
 	public DataAccessLogic() {
 		super();
 	}
-	
-	/**
-	 * 
-	 */
+
 	public DataAccessLogic(String email, String password, Member member) 
 	{
 		currentMember.setEmail(email.toLowerCase());
 		currentMember.setPassword(password);
 		this.verifyCredentials(email, password, member); 
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
-	@Override
+
+	@Override 
 	public void registration(Member member) {
 		try 
 		{
@@ -103,25 +112,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public void verifyCredentials(String signInEmail, String password, Member member) {
 		
@@ -152,7 +143,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 				loadMusicList();
 				Console.membersHomePage();
 			}
-			else Console.signIn(sc);
+			else Console.SIGN_IN_MEMBER(scanner);
 			callableStatement.close();
 			connection.close();
 			
@@ -160,25 +151,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			System.out.println(e);
 		}
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public void getBookSections() {
 		try {
@@ -202,25 +175,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		}
 		
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public void searchBooksByKeyword(int criteria, String keyword) {
 
@@ -260,7 +215,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			}
 			System.out.print("\n\n\t\t\t\t"+BU+"Enter ISBN:"+R+" "+PURPLE_BOLD_BRIGHT);
 			try {
-				isbn = sc.nextLine();
+				isbn = scanner.nextLine();
 				System.out.println(R);
 				if(isbn.equalsIgnoreCase("exit"))Console.membersHomePage();
 				Integer.valueOf(isbn);
@@ -307,13 +262,13 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 					System.out.println("\n\t\t\t\t\t  "+BU+"Open Learning Library"+R);
 					System.out.println("\n\t\t\t\t\t"+BLACK_BRIGHT+"preview - Digital Receipt"+R);
 					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+R);
-					System.out.println("\n\t\t\t\t "+BLACK_BRIGHT+"Members FullName:"+R+BLUE+" Takudzwa Kucherera\t"+R);
-					System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Book Borrowed:"+R+CYAN+" Pure Math\t"+R);
-					System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Date Borrowed:"+R+GREEN+" 2022-04-11\t"+R);
-					System.out.println("\n\t\t\t\t   "+BLACK_BRIGHT+"Date of Return:"+R+YELLOW+" 2022-05-10\t"+R);
+					System.out.println("\n\t\t\t\t "+BLACK_BRIGHT+"Members FullName:"+R+BLUE+currentMember.getFirstName()+ " " + currentMember.getSurname()+R);
+					System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Book Borrowed:"+R+CYAN+callableStatement.getString(7)+R);
+					System.out.println("\n\t\t\t\t    "+BLACK_BRIGHT+"Date Borrowed:"+R+GREEN+LocalDate.now()+R);
+					System.out.println("\n\t\t\t\t   "+BLACK_BRIGHT+"Date of Return:"+R+YELLOW+callableStatement.getDate(4)+R);
 					System.out.println("\n\t\t\t\t"+BLACK_BRIGHT+"======================================="+R);		
 					System.out.print("\n\n\t\t\t\t\t"+BLACK_BRIGHT+"Press Enter to continue:"+R+" ");
-					sc.nextLine();
+					scanner.nextLine();
 					cls();
 					System.out.print("\n\n\t\t\t\t"+GREEN_BOLD_BRIGHT+"Redirecting to Home Page");
 					loading();
@@ -335,25 +290,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			Console.queryBooks(criteria);
 		}
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public int printBorrowedBooks() {
 		int flagBit = 1;
@@ -379,25 +316,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		}
 		return flagBit;
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public void hasReturned(String isbnChoice) {
 		try {
@@ -412,38 +331,20 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 				System.out.println("\n\t\t\t\t"+GREEN_BOLD_BRIGHT+"Book returned successfully!"+R);
 				sleep(3000);
 				System.out.print("\n\n\t\t\t\t"+BLACK_BRIGHT+"Press Enter to continue:"+R);
-				sc.nextLine();
+				scanner.nextLine();
 				Console.accountRealatedInfo();
 			}
 			else throw new Exception();
 		} catch (Exception e) {
-			System.out.println("\n\t\t\t\t"+RED+"Returning book failed!"+R);
+			System.out.println("\n\t\t\t\t"+RED+"Invalid ISBN entered! (Book not found.)"+R);
 			sleep(2000);
 			System.out.print("\n\n\t\t\t\t"+BLACK_BRIGHT+"Press Enter to continue:"+R);
-			sc.nextLine();			
+			scanner.nextLine();			
 			Console.returnBook();
 		}
 		
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public void printAllBooksIBorrowed() {
 		try {
@@ -470,25 +371,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public int changePassword(String p2) {
 		int flagBit = 0;
@@ -497,7 +380,6 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			callableStatement = connection.prepareCall("{call changePassword(?,?)}");
 			callableStatement.setInt(1, currentMember.getId());
 			callableStatement.setString(2, p2);
-//			callableStatement.registerOutParameter(3, Types.INTEGER);
 			int x = callableStatement.executeUpdate();
 			flagBit = (x == 1) ? 1 : 0;
 				
@@ -508,39 +390,22 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		return flagBit;	
 		
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public void searchSongs(int i) {
 		try {
 			connect();
-//			System.out.println("\t\t\t\t" + ++cntr + ": Title : " + rs.getString(1) + "\t Artist = " + rs.getInt(2) + "\t"+ df.format(rs.getInt(3))  +"\n");
 			callableStatement = connection.prepareCall("{call loadMusic}");
 			callableStatement.execute();
 			rs = callableStatement.getResultSet();
 			int counter = 0;
+			System.out.println("\n\t\t\t\t"+BU+"============================================================"+R);
 			while(rs.next()) {
 				treeMapMusic.put(rs.getInt(1), rs.getString(6));
-				System.out.println("\n\t\tkey:" + rs.getInt(1) +"    title:" + rs.getString(2) + " by " + rs.getString(3) + "\tgenre:" + rs.getString(4));
+				System.out.println("\n\t\t\t\t   key:" + rs.getInt(1) +"    title:" + rs.getString(2) + " by " + rs.getString(3) + "\tgenre:" + rs.getString(4));
 				counter++;
 			}
+			System.out.println("\n\t\t\t\t"+BU+"============================================================"+R);
 			if(counter < 1) {
 				System.out.println("\n\t\t\t\t"+RED+"Unfortunately no Music was found"+R);
 				sleep(3000);
@@ -556,27 +421,9 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 	
 	private final void connect() throws ClassNotFoundException, SQLException {
 		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		connection = DriverManager.getConnection(url,userName,databasePassword);
+		connection = DriverManager.getConnection(URL,USER_NAME,DATABASE_PASSWORD);
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public void searchSongs(int i, String s) {
 		// TODO Auto-generated method stub
@@ -588,11 +435,13 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			callableStatement.execute();
 			rs = callableStatement.getResultSet();
 			int counter = 0;
+			System.out.println("\n\t\t\t\t"+BU+"======================================================="+R);
 			while(rs.next()) {
 				treeMapMusic.put(rs.getInt(1), rs.getString(6));
-				System.out.println("\n\t\tkey:" + rs.getInt(1) +"    title:" + rs.getString(2) + " by " + rs.getString(3) + "\tgenre:" + rs.getString(4));
+				System.out.println("\n\t\t\t\t   key:" + rs.getInt(1) +"    title:" + rs.getString(2) + " by " + rs.getString(3) + "\tgenre:" + rs.getString(4));
 				counter++;
 			}
+			System.out.println("\n\t\t\t\t"+BU+"======================================================="+R);
 			if(counter < 1) {
 				System.out.println("\n\t\t\t\t"+RED+"Unfortunately no Music was found"+R);
 				sleep(3000);
@@ -604,25 +453,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			Console.musicSessions();
 		}
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public void loadMusicList() {
 		try {
@@ -641,24 +472,6 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		}
 	}
 	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
 	@Override
 	public void allBooksInSection(Integer valueOf) {
 		int section = 0;
@@ -688,25 +501,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		determiner = "where shelfNumber = "+section+" AND available > 0";
 		searchBooksByKeyword(section, "*****");
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public void retrievePodcasts(String nextLine) {
 		try {
@@ -739,24 +534,6 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		
 	}
 	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
 	@Override
 	public void retriveMembers() {
 		cls();
@@ -784,25 +561,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		
 		
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public int storeNewBooks(Book newBook) {
 		int successFlag = 0;
@@ -827,25 +586,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		}
 		return successFlag;
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public int uploadNewSong(Music newSong) {
 		int successFlag = 0;
@@ -868,25 +609,7 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		}
 		return successFlag;
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public int deleteMember(int id) {
 		int successFlag = 0;
@@ -900,14 +623,14 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 			if(callableStatement.getInt(3) == 0) {
 				System.out.println(RED_BOLD_BRIGHT+"\n\t\t\t\tMember with ID = " + id + " does not exist in database"+R);
 				System.out.print("\n\n\t\t\t\t"+BU+"Press Enter to return:"+R);
-				sc.nextLine();
+				scanner.nextLine();
 			}
 			else {
 				System.out.println("\t\t\t\t1: Type "+RED_BRIGHT+"\"accept\""+R+" to proceed with deleting the following Member: ");
 				System.out.println("\t\t\t\t2: Type anything else to cancel process");
 				System.out.println("\n\t\t\t\tMemberId=" + id + "\tFull Name=" + callableStatement.getString(2));
 				System.out.print("\n\n\t\t\t\t"+BU+"Enter:"+R+" "+RED);
-				choice = sc.nextLine();
+				choice = scanner.nextLine();
 				System.out.println(R);
 				if(choice.equalsIgnoreCase("accept")) {
 					callableStatement = connection.prepareCall("{call deleteMember (?,?)}");
@@ -920,30 +643,12 @@ public abstract class DataAccessLogic extends GlobalMembers implements IDataAcce
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-			sc.next();
+			scanner.next();
 			serverError();
 		}
 		return successFlag;
 	}
-	
-	/**
-	 * <h1></h1>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+
 	@Override
 	public int queryMembers(int i, String nextLine) {
 		int successFlag = 0;
